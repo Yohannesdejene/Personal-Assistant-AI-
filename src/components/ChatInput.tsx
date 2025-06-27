@@ -29,22 +29,22 @@ const ChatInput = ({ onSendMessage, disabled = false }: ChatInputProps) => {
   };
 
   return (
-    <div className="p-4 bg-white border-t border-gray-200">
+    <div className="p-4   backdrop-blur-md   bg-white/10  border-primary/70   border-1">
       <form onSubmit={handleSubmit} className="flex gap-3 items-end">
         <div className="flex-1">
           <Input
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Type your message..."
+            placeholder="Ask me any thing..."
             disabled={disabled}
-            className="bg-white border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-gray-900 placeholder-gray-400 rounded-full px-4 py-3 min-h-[48px] resize-none"
+            className="bg-white/10  border-primary/70 focus:border-primary placeholder:text-white/70   text-white/70 rounded-full px-4 py-3 min-h-[48px] resize-none"
           />
         </div>
         <Button
           type="submit"
           disabled={!message.trim() || disabled}
-          className="bg-gray-800 hover:bg-gray-700 text-white rounded-full p-3 min-w-[48px] h-12 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="gradient-primary  cursor-pointer text-white rounded-full p-3 min-w-[48px] h-12 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Send className="w-5 h-5" />
         </Button>

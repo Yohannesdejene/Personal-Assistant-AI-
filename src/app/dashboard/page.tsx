@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import Header from "@/components/Layouts/Header";
+import ChatLayout from "@/components/Layouts/ChatLayout";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export const metadata: Metadata = {
@@ -9,13 +11,15 @@ export const metadata: Metadata = {
 
 const Dashboard = () => {
   return (
-    <div className="gradient-primary">
-      <SidebarProvider className="">
+    <div className=" border-0 ">
+      <SidebarProvider className=" border-0 ">
         <DefaultLayout>
-          <div>
-            <div></div>
-          </div>
+          <></>
         </DefaultLayout>
+        <div className="  w-full">
+          <ChatLayout />
+          <div></div>
+        </div>
       </SidebarProvider>
     </div>
   );

@@ -45,14 +45,16 @@
 
 :root {
   /* Primary gradient - your main brand gradient */
-  --gradient-primary: linear-gradient(to bottom right, #581C87, #1E3A8A, #312E81);
-    /* --gradient-primary: linear-gradient(to bottom right, #000000, #000000, #000000); */
+  /* --gradient-primary: linear-gradient(to bottom right, #2563EB, #1E3A8A, #312E81); */
+    --gradient-primary: linear-gradient(to bottom right, #000000, #000000, #000000);
 
   /* Secondary gradient - for icons/accents */
   --gradient-secondary: linear-gradient(to bottom right, #9333EA, #2563EB);
 
   /* Individual colors extracted from your gradients */
-  --primary: #581C87;        /* Deep purple */
+  /* --primary: #1E3A8A;      */
+      --primary: #000000;     
+
   --primary-foreground: #ffffff;
 
   --secondary: #9333EA;      /* Brighter purple */
@@ -80,6 +82,10 @@
 .gradient-primary {
   background: var(--gradient-primary);
 }
+.dark {
+  --gradient-primary: linear-gradient(to bottom right, #18181b, #1e293b, #0000);
+  /* ... */
+}
 
 .gradient-secondary {
   background: var(--gradient-secondary);
@@ -90,6 +96,7 @@
 }
 
 .dark {
+    --primary: #000;       
   --background: #373e49;
   --foreground: #FFFFFF;
   --card: #374151;

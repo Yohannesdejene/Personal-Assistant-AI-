@@ -88,11 +88,15 @@ const ChatInterface = () => {
     }, Math.random() * 2000 + 1000); // Random delay between 1-3 seconds
   };
 
-  return (
-    <div className="flex flex-col h-screen max-w-4xl mx-auto bg-white shadow-lg">
-      <ChatHeader />
+  
 
-      <div className="flex-1 bg-gradient-to-b from-purple-50 to-purple-100/50 relative">
+  return (
+    <div className="relative flex flex-col h-screen w-full gap-0 bg-primary  mx-auto shadow-lg">
+      <div className="absolute top-0 w-full bg-primary border-b-1 border-primary/70 z-10">
+        <ChatHeader />
+      </div>
+
+      <div className="flex-1 bottom-18   pt-40  overflow-y-auto bg-primary relative border-0 ">
         <ScrollArea ref={scrollAreaRef} className="h-full">
           <div className="p-4 space-y-4">
             {messages.map((message) => (
@@ -116,7 +120,9 @@ const ChatInterface = () => {
         </ScrollArea>
       </div>
 
-      <ChatInput onSendMessage={handleSendMessage} disabled={isTyping} />
+      <div className="absolute bottom-5 w-full  bg-primary border-t-1 border-primary/10  ">
+        <ChatInput onSendMessage={handleSendMessage} disabled={isTyping} />
+      </div>
     </div>
   );
 };

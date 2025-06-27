@@ -30,6 +30,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import ProfileDropDown from "@/components/ProfileDropDown";
 
 // Menu items.
 const items = [
@@ -62,8 +63,8 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className="border-0 border-white/10 ">
-      <SidebarContent className=" gradient-primary  ">
+    <Sidebar className="  border-r-1 border-primary/70 ">
+      <SidebarContent className="   bg-primary ">
         <SidebarGroup className="  backdrop-blur-md    bg-white/10 border-0    h-full flex flex-col justify-between">
           <div>
             <SidebarGroupLabel>
@@ -127,20 +128,7 @@ export function AppSidebar() {
                       <ChevronUp className="ml-auto" />
                     </SidebarMenuButton>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    side="top"
-                    className="w-[200px] cursor-pointer backdrop-blur-md px-5 py-6  text-white rounded-2xl border-none    bg-white/10"
-                  >
-                    <DropdownMenuItem className="cursor-pointer !hover:bg-white/20 focus:bg-white/20 rounded ps-5">
-                      <span>Account</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer !hover:bg-white/20 focus:bg-white/20 rounded ps-5">
-                      <span>Billing</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer hover:text-black !hover:bg-white/20 focus:bg-white/20 rounded ps-5">
-                      <span>Sign out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
+                  <ProfileDropDown />
                 </DropdownMenu>
               </SidebarMenuItem>
             </SidebarMenu>

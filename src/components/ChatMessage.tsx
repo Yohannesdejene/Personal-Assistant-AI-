@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface ChatMessageProps {
@@ -24,12 +24,21 @@ const ChatMessage = ({
       <Avatar className="w-8 h-8 flex-shrink-0">
         <AvatarFallback
           className={`text-xs font-medium ${
-            isUser
-              ? "bg-gray-700 text-white"
-              : "bg-white text-gray-600 border border-gray-200"
+            isUser ? "bg-white text-black" : "bg-white text-gray-600 border-0"
           }`}
         >
-          {isUser ? "You" : "AI"}
+          {isUser ? (
+            <div>You</div>
+          ) : (
+            <Image
+              src="/HeaderLogo.png"
+              width="35"
+              height="35"
+              style={{ borderRadius: "20%" }}
+              alt="logo"
+              className="gradient-icon "
+            />
+          )}
         </AvatarFallback>
       </Avatar>
 
@@ -41,8 +50,8 @@ const ChatMessage = ({
         <div
           className={`px-4 py-3 rounded-2xl shadow-sm ${
             isUser
-              ? "bg-white text-gray-900 rounded-br-md"
-              : "bg-purple-50 text-gray-900 rounded-bl-md border border-purple-100"
+              ? " text-white   backdrop-blur-md bg-white/5 border-1 border-white/10 rounded-br-md "
+              : " backdrop-blur-md   bg-white/10  text-white rounded-bl-md  border-1 border-white/10"
           }`}
         >
           {isTyping ? (
