@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { users, userSessions } from "@/lib/db/schema";
+import { db } from "@/db";
+import { users, userSessions } from "@/db/schema";
 import {
   comparePassword,
   generateToken,

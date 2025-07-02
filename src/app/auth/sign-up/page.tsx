@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+
 export const metadata: Metadata = {
   title: "AIAssist",
   description: "Register to AIAssist",
