@@ -27,13 +27,13 @@ import { AppSidebar } from "@/components/Sidebar/index";
 import MobileSideBar from "@/components/Sidebar/MobileNav";
 import { authClient, useSession } from "@/lib/auth-client";
 
-const ChatHeader = () => {
+const NormalHeader = () => {
   const { data: currentUser } = useSession();
 
   const [goal, setGoal] = useState(350);
 
   return (
-    <div className="flex items-center justify-between  p-4  backdrop-blur-md   bg-white/10  border-gray-200 shadow-sm">
+    <div className="flex sm:hidden items-center justify-between  p-4 m-0 backdrop-blur-md   bg-white/10  border-gray-200 shadow-sm">
       <Drawer direction="left">
         <DrawerTrigger asChild>
           <button className="flex md:hidden">
@@ -46,7 +46,7 @@ const ChatHeader = () => {
         </DrawerContent>
       </Drawer>
       <div className="flex items-center gap-3">
-        <div className=" flex gap-3 items-center justify-center">
+        <div className=" flex  md:hidden gap-3 items-center justify-center">
           <div>
             <Image
               src="/HeaderLogo.png"
@@ -90,4 +90,4 @@ const ChatHeader = () => {
   );
 };
 
-export default ChatHeader;
+export default NormalHeader;

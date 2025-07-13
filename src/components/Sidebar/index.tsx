@@ -10,7 +10,10 @@ import {
   FileBarChart2,
   ChevronUp,
   User2,
+  ChevronDown,
+  PlusCircle,
 } from "lucide-react";
+
 import {
   Sidebar,
   SidebarContent,
@@ -24,19 +27,18 @@ import {
 } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ProfileDropDown from "@/components/ProfileDropDown";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { authClient, useSession } from "@/lib/auth-client";
 
 // Menu items.
 const items = [
   {
     title: "Chat",
-    url: "#",
+    url: "/dashboard",
     icon: MessagesSquare,
   },
   {
@@ -54,14 +56,17 @@ const items = [
     url: "#",
     icon: FileBarChart2,
   },
+
   {
-    title: "Settings",
-    url: "#",
+    title: "Api Key",
+    url: "/manage-api-key",
     icon: Settings,
   },
 ];
 
 export function AppSidebar() {
+  const { data: currentUser } = useSession();
+
   return (
     <Sidebar className="  border-r-1 border-primary/70 ">
       <SidebarContent className="   bg-primary ">
@@ -123,8 +128,17 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild className="">
-                    <SidebarMenuButton className=" hover:bg-transparent focus:bg-transparent  ">
-                      <User2 /> Username
+                    <SidebarMenuButton className="cursor-pointer  hover:bg-transparent hover:text-white focus:bg-transparent  ">
+                      <Avatar className="mr-2 h-6 w-6 hover:text-white">
+                        <AvatarImage
+                          src={currentUser?.user.image || undefined}
+                          alt={currentUser?.user.name}
+                        />
+                        <AvatarFallback className="hover:text-white">
+                          {currentUser?.user.name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      {currentUser?.user.name}
                       <ChevronUp className="ml-auto" />
                     </SidebarMenuButton>
                   </DropdownMenuTrigger>

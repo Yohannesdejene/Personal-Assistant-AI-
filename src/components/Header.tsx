@@ -1,8 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
+const { data: session } = await authClient.getSession();
 const Header = () => {
+  const router = useRouter();
   return (
     <header className="flex justify-between items-center px-5 md:px-30 py-5  border-b border-white/20 bg-white/15">
       <div className="flex items-center gap-3">
@@ -44,17 +48,31 @@ const Header = () => {
         >
           How It Works
         </a>
-        {/* <a
-          href="#"
-          className="text-white/90 hover:text-white transition-colors text-sm"
+
+        <button
+          className="cursor-pointer  rounded-2xl bg-white/20 hover:bg-white/30 border border-white/30 text-white px-5 py-2  text-sm transition-all hover:scale-105"
+          onClick={() => {
+            console.log("hello");
+            if (session) {
+              router.push("/dashboard");
+            } else {
+              router.push("/auth/sign-in");
+            }
+          }}
         >
-          Pricing
-        </a> */}
-        <button className="cursor-pointer  rounded-2xl bg-white/20 hover:bg-white/30 border border-white/30 text-white px-5 py-2  text-sm transition-all hover:scale-105">
           Get Started
         </button>
       </nav>
-      <button className="flex md:hidden cursor-pointer rounded-lg bg-white/20 hover:bg-white/30 border border-white/30 text-white px-5 py-2 text-sm transition-all hover:scale-105">
+      <button
+        className="cursor-pointer md:hidden  rounded-2xl bg-white/20 hover:bg-white/30 border border-white/30 text-white px-5 py-2  text-sm transition-all hover:scale-105"
+        onClick={() => {
+          if (session) {
+            router.push("/dashboard");
+          } else {
+            router.push("/auth/sign-in");
+          }
+        }}
+      >
         Get Started
       </button>
     </header>

@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 
-
 export const metadata: Metadata = {
   title: "AIAssist",
   description: "Register to AIAssist",
 };
 import SignupFrom from "@/components/auth/register";
 
-const Login = () => {
+const Signup = () => {
   return (
     <div className="bg-white ">
       <main className="gradient-primary h-screen text-white  overflow-y-auto font-sans flex items-center   ">
@@ -16,4 +15,4 @@ const Login = () => {
     </div>
   );
 };
-export default Login;
+export default Signup;
