@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { eq, and } from "drizzle-orm";
-import bcrypt from "bcryptjs";
-import { nanoid } from "nanoid";
 import getSession from "@/utils/sessionManager";
 import { user } from "@/db/schema";
 import { encrypt, decrypt } from "@/utils/encryptionDecription";
