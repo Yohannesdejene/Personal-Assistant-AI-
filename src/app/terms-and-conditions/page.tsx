@@ -4,7 +4,7 @@ import React from "react";
 
 export default function TermsAndConditionsPage() {
   return (
-    <div className="max-w-2xl mx-auto px-4 py-12 text-white">
+    <div className="max-full bg-primary mx-auto px-4 py-12 text-white">
       <h1 className="text-3xl font-bold mb-6">Terms and Conditions</h1>
       <div className="bg-white/10 border border-white/20 rounded-xl p-6 shadow-md">
         <h2 className="text-xl font-semibold mb-4">1. Acceptance of Terms</h2>
@@ -131,9 +131,8 @@ export default function TermsAndConditionsPage() {
             href="mailto:support@example.com"
             className="text-blue-400 underline"
           >
-            support@example.com
+            yohannesdejene23@gmail.com{" "}
           </a>
-          .
         </p>
       </div>
     </div>

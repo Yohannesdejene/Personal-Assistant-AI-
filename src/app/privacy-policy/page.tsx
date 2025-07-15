@@ -4,7 +4,7 @@ import React from "react";
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="max-w-2xl mx-auto px-4 py-12 text-white">
+    <div className="max-full bg-primary mx-auto px-4 py-12 text-white ">
       <h1 className="text-3xl font-bold mb-6">
         Privacy Policy for Google Calendar Access
       </h1>
@@ -78,9 +78,8 @@ export default function PrivacyPolicyPage() {
             href="mailto:support@example.com"
             className="text-blue-400 underline"
           >
-            support@example.com
+            yohannesdejene23@gmail.com{" "}
           </a>
-          .
         </p>
 
         <h2 className="text-xl font-semibold mb-4">
