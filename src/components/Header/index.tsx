@@ -59,10 +59,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
           </Link>
         </div>
 
-        <div className="flex items-center gap-3 2xsm:gap-7">
-          <ul className="flex items-center gap-2 2xsm:gap-4">
-         
-        </div>
+        <div className="flex items-center gap-3 2xsm:gap-7"></div>
       </div>
     </header>
   );
