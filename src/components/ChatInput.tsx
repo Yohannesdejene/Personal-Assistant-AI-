@@ -29,7 +29,7 @@ const ChatInput = ({ onSendMessage, disabled = false }: ChatInputProps) => {
   };
 
   return (
-    <div className="p-4   backdrop-blur-md   bg-white/10  border-primary/70   border-1">
+    <div className="p-4  justify-center  backdrop-blur-md   bg-white/10  border-primary/70   border-1">
       <form onSubmit={handleSubmit} className="flex gap-3 items-end">
         <div className="flex-1">
           <Input

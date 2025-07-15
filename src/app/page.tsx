@@ -9,27 +9,29 @@ import HowItWorks from "@/components/HowItWorks";
 import Footer from "@/components/Footer";
 import SeeItInAction from "@/components/SeeItInAction";
 import { authClient } from "@/lib/auth-client";
+   import { Toaster } from "sonner";
 
-const { data: session } = await authClient.getSession();
+   const { data: session } = await authClient.getSession();
 
-export default function Home() {
-  const router = useRouter();
+   export default function Home() {
+     const router = useRouter();
 
-  useEffect(() => {
-    if (session) {
-      router.push("/dashboard");
-    }
-  }, [session, router]);
-  return (
-    <div className="bg-white ">
-      <main className="gradient-primary text-white font-sans  ">
-        <Header />
-        <HeroSection />
-        <FeaturesSection />
-        <HowItWorks />
-        <SeeItInAction />
-        <Footer />
-      </main>
-    </div>
-  );
-}
+     useEffect(() => {
+       if (session) {
+         router.push("/dashboard");
+       }
+     }, [session, router]);
+     return (
+       <div className="bg-white ">
+         <main className="gradient-primary text-white font-sans  ">
+           <Header />
+           <HeroSection />
+           <FeaturesSection />
+           <HowItWorks />
+           <SeeItInAction />
+           <Footer />
+           <Toaster />
+         </main>
+       </div>
+     );
+   }

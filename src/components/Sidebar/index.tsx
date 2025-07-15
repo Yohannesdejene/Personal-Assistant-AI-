@@ -69,8 +69,8 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="  border-r-1 border-primary/70 ">
-      <SidebarContent className="   bg-primary ">
-        <SidebarGroup className="  backdrop-blur-md    bg-white/10 border-0    h-full flex flex-col justify-between">
+      <SidebarContent className="  bg-primary ">
+        <SidebarGroup className="   border-0    h-full flex flex-col justify-between">
           <div>
             <SidebarGroupLabel>
               {" "}

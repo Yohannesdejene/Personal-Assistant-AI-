@@ -1,12 +1,15 @@
 "use client";
 import Image from "next/image";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { authClient, useSession } from "@/lib/auth-client";
 
 interface ChatMessageProps {
   message: string;
   isUser: boolean;
   timestamp: string;
   isTyping?: boolean;
+  type?: "text" | "component";
+  component?: React.ReactNode; // Optional, for custom component
 }
 
 const ChatMessage = ({
@@ -14,7 +17,10 @@ const ChatMessage = ({
   isUser,
   timestamp,
   isTyping = false,
+  type,
+  component,
 }: ChatMessageProps) => {
+  const { data: currentUser } = useSession();
   return (
     <div
       className={`flex gap-3 mb-6 animate-fade-in-up ${
@@ -28,7 +34,15 @@ const ChatMessage = ({
           }`}
         >
           {isUser ? (
-            <div>You</div>
+            <>
+              <div style={{ backgroundColor: "green" }}>
+                <img
+                  src={currentUser?.user.image || ""}
+                  alt=""
+                  // style={{ width: "30px", height: "40px" }}
+                />{" "}
+              </div>
+            </>
           ) : (
             <Image
               src="/HeaderLogo.png"
@@ -60,7 +74,14 @@ const ChatMessage = ({
               <div className="typing-dot"></div>
               <div className="typing-dot"></div>
             </div>
+          ) : type == "component" && (
+              <div className="">{/* {component} hey this is component5 */}</div>
+            ) ? (
+            <>
+              <div className=" p-3 rounded-2xl"> {component}</div>
+            </>
           ) : (
+            // component
             <p className="text-sm leading-relaxed">{message}</p>
           )}
         </div>

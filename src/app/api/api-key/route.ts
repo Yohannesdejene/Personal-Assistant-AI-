@@ -1,30 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
-import { apiKeys } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
 import getSession from "@/utils/sessionManager";
+import { user } from "@/db/schema";
+import { encrypt, decrypt } from "@/utils/encryptionDecription";
 
 export async function GET(req: NextRequest) {
   const session = await getSession();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const keys = await db
+
+  // Get user with decrypted API key
+  let data: any = await db
     .select()
-    .from(apiKeys)
-    .where(eq(apiKeys.userId, session.user.id));
-  return NextResponse.json(
-    keys.map((k) => ({
-      id: k.id,
-      keyPrefix: k.keyPrefix,
-      isActive: k.isActive,
-      lastUsedAt: k.lastUsedAt,
-      expiresAt: k.expiresAt,
-      createdAt: k.createdAt,
-    }))
-  );
+    .from(user)
+    .where(eq(user.id, session.user.id))
+    .limit(1);
+
+  if (!data) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({
+    apiKey: data[0].apiKey ? decrypt(data[0].apiKey) : null,
+    isActive: !!data.apiKey,
+    createdAt: data.createdAt,
+  });
 }
 
 export async function POST(req: NextRequest) {
@@ -32,27 +36,29 @@ export async function POST(req: NextRequest) {
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const { key } = await req.json();
-  if (!key) {
-    return NextResponse.json({ error: "Key is required" }, { status: 400 });
+  const { apiKey } = await req.json();
+  if (!apiKey) {
+    return NextResponse.json({ error: "Api key is required" }, { status: 400 });
   }
-  // Remove old keys for this user
-  await db.delete(apiKeys).where(eq(apiKeys.userId, session.user.id));
-  // Hash and store the provided key
-  const hashedKey = await bcrypt.hash(key, 10);
-  const keyPrefix = key.slice(0, 6);
-  const id = nanoid();
-  await db.insert(apiKeys).values({
-    id,
-    name: "API Key",
-    hashedKey,
-    keyPrefix,
-    userId: session.user.id,
-    isActive: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+
+  // Generate a new API key (you might want to integrate with Gemini API here)
+  const hashedKey = encrypt(apiKey);
+  // Update existing API key
+  const data = await db
+    .update(user)
+    .set({
+      apiKey: hashedKey,
+      updatedAt: new Date(),
+    })
+    .where(eq(user.id, session.user.id));
+
+  // Return the generated key only once (it's hashed in DB)
+  return NextResponse.json({
+    success: true,
+    data: hashedKey,
+    message:
+      "API key created successfully. Please copy it now as it won't be shown again.",
   });
-  return NextResponse.json({ success: true });
 }
 
 export async function DELETE(req: NextRequest) {
@@ -67,8 +73,6 @@ export async function DELETE(req: NextRequest) {
       { status: 400 }
     );
   }
-  await db
-    .delete(apiKeys)
-    .where(and(eq(apiKeys.id, id), eq(apiKeys.userId, session.user.id)));
+  await db.delete(user).where(and(eq(user.id, id), eq(id, session.user.id)));
   return NextResponse.json({ success: true });
 }
