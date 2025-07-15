@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import SidebarDropdown from "@/components/Sidebar/SidebarDropdown";
 import { usePathname } from "next/navigation";
 
 const SidebarItem = ({ item, pageName, setPageName }: any) => {
@@ -27,7 +26,9 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
       <li>
         <div
           onClick={handleClick}
-          className={`${isItemActive ? "bg-hoverBg dark:bg-hoverBg" : ""} group relative flex cursor-pointer items-center gap-2.5 rounded-md px-4 py-2 font-medium text-white duration-300 ease-in-out hover:bg-hoverBg`}
+          className={`${
+            isItemActive ? "bg-hoverBg dark:bg-hoverBg" : ""
+          } group relative flex cursor-pointer items-center gap-2.5 rounded-md px-4 py-2 font-medium text-white duration-300 ease-in-out hover:bg-hoverBg`}
         >
           {item.icon}
           {item.route && item.route !== "#" ? (
@@ -63,9 +64,7 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
             className={`translate transform overflow-hidden ${
               pageName !== item.label.toLowerCase() && "hidden"
             }`}
-          >
-            <SidebarDropdown item={item.children} />
-          </div>
+          ></div>
         )}
       </li>
     </>
