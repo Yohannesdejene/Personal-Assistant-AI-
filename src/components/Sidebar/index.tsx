@@ -41,16 +41,7 @@ const items = [
     url: "/dashboard",
     icon: MessagesSquare,
   },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Tasks",
-    url: "#",
-    icon: CheckSquare,
-  },
+
   {
     title: "Reports",
     url: "#",

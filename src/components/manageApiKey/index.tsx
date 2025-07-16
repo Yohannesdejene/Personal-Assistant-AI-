@@ -49,9 +49,8 @@ export default function ApiKeyManagementPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showNewKeyDialog, setShowNewKeyDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [keyToDelete, setKeyToDelete] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
-
+  const [loadingDelete, setLoadingDelete] = useState(false);
   // react-hook-form setup
   const {
     register,
@@ -118,15 +117,15 @@ export default function ApiKeyManagementPage() {
   };
 
   const deleteApiKey = async () => {
-    if (!keyToDelete) return;
-
     try {
-      const response = await fetch(`/api/api-keys/${keyToDelete}`, {
+      setLoadingDelete(true);
+      const response = await fetch(`/api/api-key`, {
         method: "DELETE",
       });
 
       if (response.ok) {
         toast.success("API key deleted successfully!");
+
         fetchApiKeys();
       } else {
         toast.error("Failed to delete API key");
@@ -134,8 +133,9 @@ export default function ApiKeyManagementPage() {
     } catch (error) {
       toast.error("Failed to delete API key");
     } finally {
+      setLoadingDelete(false);
+
       setShowDeleteDialog(false);
-      setKeyToDelete(null);
     }
   };
 
@@ -316,6 +316,7 @@ export default function ApiKeyManagementPage() {
             </Button>
             <Button
               variant="outline"
+              disabled={loadingDelete}
               onClick={deleteApiKey}
               className="cursor-pointer text-red-500  hover:text-red-500  hover:bg-white rounded-2xl"
             >

@@ -12,6 +12,8 @@ export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
+  role: text("role").default("user"),
+  lang: text("lang").default("en"),
   apiKey: text("apiKey"),
   emailVerified: boolean("email_verified")
     .$defaultFn(() => false)
@@ -55,27 +57,6 @@ export const account = pgTable("account", {
   updatedAt: timestamp("updated_at").notNull(),
 });
 
-export const apiKeys = pgTable("api_keys", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  hashedKey: text("hashed_key").notNull(),
-  keyPrefix: text("key_prefix").notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  isActive: boolean("is_active")
-    .$defaultFn(() => true)
-    .notNull(),
-  lastUsedAt: timestamp("last_used_at"),
-  expiresAt: timestamp("expires_at"),
-  createdAt: timestamp("created_at")
-    .$defaultFn(() => /* @__PURE__ */ new Date())
-    .notNull(),
-  updatedAt: timestamp("updated_at")
-    .$defaultFn(() => /* @__PURE__ */ new Date())
-    .notNull(),
-});
-
 export const verification = pgTable("verification", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
@@ -91,4 +72,4 @@ export const verification = pgTable("verification", {
 
 // Types
 
-export const schema = { user, session, account, verification, apiKeys };
+export const schema = { user, session, account, verification };

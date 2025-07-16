@@ -7,6 +7,8 @@ import { encrypt, decrypt } from "@/utils/encryptionDecription";
 
 export async function GET(req: NextRequest) {
   const session = await getSession();
+
+  console.log("session", session);
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -64,13 +66,10 @@ export async function DELETE(req: NextRequest) {
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const { id } = await req.json();
-  if (!id) {
-    return NextResponse.json(
-      { error: "API key id is required" },
-      { status: 400 }
-    );
-  }
-  await db.delete(user).where(and(eq(user.id, id), eq(id, session.user.id)));
+  // Set the user's api key to null instead of deleting the user
+  await db
+    .update(user)
+    .set({ apiKey: null })
+    .where(eq(user.id, session.user.id));
   return NextResponse.json({ success: true });
 }
