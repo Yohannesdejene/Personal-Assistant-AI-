@@ -35,7 +35,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { authClient, useSession } from "@/lib/auth-client";
 
 // Menu items.
-const items = [
+export const items = [
   {
     title: "Chat",
     url: "/dashboard",

@@ -73,3 +73,5 @@ export async function DELETE(req: NextRequest) {
     .where(eq(user.id, session.user.id));
   return NextResponse.json({ success: true });
 }
+
+

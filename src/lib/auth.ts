@@ -24,19 +24,4 @@ export const auth = betterAuth({
       },
     },
   },
-  user: {
-    additionalFields: {
-      role: {
-        type: "string",
-        required: false,
-        defaultValue: "user",
-        input: false, // don't allow user to set role
-      },
-      lang: {
-        type: "string",
-        required: false,
-        defaultValue: "en",
-      },
-    },
-  },
 });

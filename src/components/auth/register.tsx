@@ -56,7 +56,7 @@ export default function RegisterFrom() {
           <h2 className="font-bold text-center  text-3xl">Welcome,</h2>
 
           <h6 className="text-white/80 text-md text-center">
-            Register to AssistAI{" "}
+            Register to AIASSIST{" "}
           </h6>
         </div>
 
@@ -76,7 +76,7 @@ export default function RegisterFrom() {
             ) : (
               <FaGoogle className="w-5 h-5 text-white" />
             )}
-            {loading ? "Signing in..." : " Sign Up with Google"}
+            {loading ? "Signup in progress..." : " Sign Up with Google"}
           </Button>
         </div>
         <div className="mt-5 mb-1 text-center items-center justify-center flex flex-row gap-2">

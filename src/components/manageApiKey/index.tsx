@@ -125,7 +125,7 @@ export default function ApiKeyManagementPage() {
 
       if (response.ok) {
         toast.success("API key deleted successfully!");
-
+        setApiKey(null);
         fetchApiKeys();
       } else {
         toast.error("Failed to delete API key");
@@ -139,21 +139,6 @@ export default function ApiKeyManagementPage() {
     }
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard!");
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
   return (
     <div className=" px-6 py-8 bg-primary max-w-4xl">
       <div className="mb-8">
@@ -161,7 +146,7 @@ export default function ApiKeyManagementPage() {
           API Key Management
         </h1>
         <p className="text-white/70">
-          Manage your Gemini 2.5 flush API keys securely. Keys are hashed and
+          This application uses Gemini 2.0 flush API keys. Keys are hashed and
           stored safely in our database.
         </p>
       </div>

@@ -19,5 +19,7 @@ export function useGoogleCalendarAccess() {
     );
   }, []);
 
-  return { loading, handleCalendarAccess };
+  return { loading, setLoading, handleCalendarAccess };
 }
+
+

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getGoogleAccessToken } from "@/utils/sessionManager";
 import getSession from "@/utils/sessionManager";
-
 const GOOGLE_CALENDAR_API =
   "https://www.googleapis.com/calendar/v3/calendars/primary/events";
 
@@ -23,9 +22,11 @@ async function fetchWithAuth(
 // GET: List events
 export async function GET(req: NextRequest) {
   const session = await getSession();
-
-  console.log("session", session);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized ." }, { status: 401 });
+  }
   const accessToken = await getGoogleAccessToken();
+
   if (!accessToken) {
     return NextResponse.json(
       { error: "Unauthorized or no Google account linked." },

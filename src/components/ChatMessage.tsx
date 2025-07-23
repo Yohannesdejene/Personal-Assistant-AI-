@@ -4,12 +4,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { authClient, useSession } from "@/lib/auth-client";
 
 interface ChatMessageProps {
-  message: string;
+  message: any;
   isUser: boolean;
-  timestamp: string;
+  timestamp: Date | undefined;
   isTyping?: boolean;
-  type?: "text" | "component";
-  component?: React.ReactNode; // Optional, for custom component
 }
 
 const ChatMessage = ({
@@ -17,8 +15,6 @@ const ChatMessage = ({
   isUser,
   timestamp,
   isTyping = false,
-  type,
-  component,
 }: ChatMessageProps) => {
   const { data: currentUser } = useSession();
   return (
@@ -57,7 +53,7 @@ const ChatMessage = ({
       </Avatar>
 
       <div
-        className={`flex flex-col max-w-xs sm:max-w-sm md:max-w-md ${
+        className={`flex flex-col max-w-xs sm:max-w-sm md:max-w-xl ${
           isUser ? "items-end" : "items-start"
         }`}
       >
@@ -68,24 +64,32 @@ const ChatMessage = ({
               : " backdrop-blur-md   bg-white/10  text-white rounded-bl-md  border-1 border-white/10"
           }`}
         >
-          {isTyping ? (
-            <div className="typing-indicator py-1">
-              <div className="typing-dot"></div>
-              <div className="typing-dot"></div>
-              <div className="typing-dot"></div>
-            </div>
-          ) : type == "component" && (
-              <div className="">{/* {component} hey this is component5 */}</div>
-            ) ? (
+          <h6 className="font-sm p-0 rounded-2xl">
+            {/* {message?.parts?.map((part: any, i: number) => {
+              switch (part.type) {
+                case "text":
+                  return (
+                    <div key={`${message.id}-${i}`} className="font-sm text-sm">
+                      {part.text}
+                    </div>
+                  );
+              }
+            })} */}
+            <div className="font-sm text-sm">{message.content}</div>
+
             <>
-              <div className=" p-3 rounded-2xl"> {component}</div>
+              {isTyping && (
+                <div className="typing-indicator py-1">
+                  <div className="typing-dot"></div>
+                  <div className="typing-dot"></div>
+                  <div className="typing-dot"></div>
+                </div>
+              )}
             </>
-          ) : (
-            // component
-            <p className="text-sm leading-relaxed">{message}</p>
-          )}
+          </h6>
+          {/* </> */}
+          {/* )} */}
         </div>
-        <span className="text-xs text-gray-400 mt-1 px-1">{timestamp}</span>
       </div>
     </div>
   );

@@ -11,14 +11,9 @@ import {
 } from "lucide-react";
 import ProfileDropDown from "@/components/ProfileDropDown";
 import Link from "next/link";
+import { items } from "./index";
 
-const items = [
-  { title: "Chat", url: "#", icon: MessagesSquare },
-  { title: "Calendar", url: "#", icon: Calendar },
-  { title: "Tasks", url: "#", icon: CheckSquare },
-  { title: "Reports", url: "#", icon: FileBarChart2 },
-  { title: "Settings", url: "#", icon: Settings },
-];
+
 
 const MobileNav = () => {
   return (
