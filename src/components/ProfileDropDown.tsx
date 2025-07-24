@@ -49,8 +49,8 @@ const ProfileDropDown = () => {
                       setLoading(true);
                     },
                     onResponse: () => {
-                      router.push("/auth/sign-in"); // redirect to login page
                       setLoading(false);
+                      router.push("/auth/sign-in"); // redirect to login page
                     },
                     onError: (ctx: any) => {
                       // toast.error(ctx.error.message);

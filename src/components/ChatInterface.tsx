@@ -1,6 +1,5 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-
 import ChatHeader from "./ChatHeader";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
@@ -22,12 +21,14 @@ const starterMessage = {
 const ChatInterface = () => {
   const { handleCalendarAccess, loading, setLoading } =
     useGoogleCalendarAccess();
+  const [needsCalendarAccess, setNeedsCalendarAccess] = useState(false);
 
   const [error, setError] = useState(null);
   const errorAppendedRef = useRef(false);
   const { completion, complete } = useCompletion({
     api: "/api/ai/completion",
   });
+
   const { messages, input, setInput, append, status } = useChat({
     api: "/api/ai/chat",
     onError: async (error?: any) => {
@@ -61,28 +62,42 @@ const ChatInterface = () => {
     },
   });
 
-  console.log("messages-messages", messages);
+  const fetchCalendarEvents = async () => {
+    try {
+      const res = await fetch("/api/calendar");
+      console.log("resresres calander access", res);
 
-  console.log("status", status);
-
+      if (res.status === 401) {
+        setNeedsCalendarAccess(true);
+        return;
+      }
+      const data = await res.json();
+      console.log("Calendar events:", data);
+    } catch (err) {
+      console.error("Calendar error:", err);
+      setNeedsCalendarAccess(true);
+    }
+  };
+  const fetchCheckApiKey = async () => {
+    try {
+      const response = await fetch("/api/api-key/check-api-key");
+      const data = await response.json();
+      // Check the status code
+      if (response.status === 200 && data.valid) {
+        // API key is valid
+        console.log("API key is valid!");
+      } else {
+        setError(data?.error);
+      }
+    } catch (error) {
+      console.error("Failed to fetch check-api-key", error);
+    }
+  };
   useEffect(() => {
     // Fetch the check-api-key API on mount
-    const fetchCheckApiKey = async () => {
-      try {
-        const response = await fetch("/api/api-key/check-api-key");
-        const data = await response.json();
-        // Check the status code
-        if (response.status === 200 && data.valid) {
-          // API key is valid
-          console.log("API key is valid!");
-        } else {
-          setError(data?.error);
-        }
-      } catch (error) {
-        console.error("Failed to fetch check-api-key", error);
-      }
-    };
+
     fetchCheckApiKey();
+    fetchCalendarEvents();
   }, []);
 
   const [isTyping, setIsTyping] = useState(false);
@@ -125,9 +140,19 @@ const ChatInterface = () => {
                   />
                 </div>
               ))}
-              {/* <button onClick={handleCalendarAccess}>
-                Give google calender access
-              </button> */}
+              {needsCalendarAccess && (
+                <div className="cursor-pointer p-6 m-4   rounded-2xl border-1  shadow-sm">
+                  <p className="mb-4 text-yellow-500 font-medium rounded-2xl">
+                    Google Calendar access is required to fetch your events.
+                  </p>
+                  <button
+                    onClick={handleCalendarAccess}
+                    className="cursor-pointer bg-blue-600 rounded-2xl hover:bg-blue-700 text-white font-semibold px-5 py-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1"
+                  >
+                    Give Google Calendar Access
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 

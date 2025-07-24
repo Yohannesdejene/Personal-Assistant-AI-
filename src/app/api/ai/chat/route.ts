@@ -1,16 +1,19 @@
-import { streamText, UIMessage } from "ai";
+import { NextRequest, NextResponse } from "next/server";
+import { streamText, UIMessage, tool } from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { db } from "@/db";
 import { user as userTable } from "@/db/schema";
 import { ConsoleLogWriter, eq } from "drizzle-orm";
 import getSession from "@/utils/sessionManager"; // adjust path as needed
 import { encrypt, decrypt } from "@/utils/encryptionDecription";
-// import { StreamingTextResponse } from "ai/";
+import { cookies } from "next/headers";
 
-export async function POST(req: Request) {
-  // const { messages }: { messages: UIMessage[] } = await req.json();
+// import { StreamingTextResponse } from "ai/";
+import z from "zod";
+
+export async function POST(req: any) {
+  const token = req.cookies.get("better-auth.session_token");
   const { messages } = await req.json();
-  console.log("messages", messages);
 
   // 1. Get user ID from session/auth
   const session = await getSession();
@@ -29,7 +32,6 @@ export async function POST(req: Request) {
     .then((rows) => rows[0]);
 
   if (!user?.apiKey) {
-    console.log("no api key hello");
     // Stream a system/assistant message as a response
     return new Response(JSON.stringify({ error: "Api key not found" }), {
       status: 401,
@@ -37,7 +39,6 @@ export async function POST(req: Request) {
     });
   }
 
-  console.log("decrypt(user.apiKey)-111 ", decrypt(user.apiKey));
   let google;
   try {
     google = createGoogleGenerativeAI({ apiKey: decrypt(user.apiKey) });
@@ -56,8 +57,56 @@ export async function POST(req: Request) {
   try {
     const result: any = streamText({
       model: google("models/gemini-2.0-flash-exp"),
-      system:
-        "You are a helpful personal assistant created by Yohannes Dejene a senior software developer.",
+      system: `You are a helpful personal assistant created by Yohannes Dejene, a senior software developer.
+
+Today's date is ${
+        new Date().toISOString().split("T")[0]
+      } (yyyy-mm-dd). Use this as a reference when answering calendar-related questions.
+
+If the user asks something like “Do I have any events today?”, check if any event’s date matches today's date. Return only relevant events. If there are no events, say "No events for today."
+
+If the API key is not correct or invalid, show or stream "Invalid API key" message.
+
+Keep answers for calendar queries short and direct.
+`,
+
+      tools: {
+        calendar: tool({
+          description: "Get the calendar and return events",
+          parameters: z.object({
+            calendar: z
+              .string()
+              .optional()
+              .describe("The calendar type or identifier (optional)"),
+          }),
+
+          execute: async ({ calendar }, { abortSignal }) => {
+            try {
+              const res = await fetch(`http://localhost:3000/api/calendar`, {
+                // signal: abortSignal,
+                headers: {
+                  Cookie: `${token?.name?.toString()}=${token.value?.toString()}`,
+                },
+              });
+
+              console.log("res", res);
+              if (!res.ok) {
+                // throw new Error("Calendar API error");
+                return {
+                  error: "Failed to fetch calendar events",
+                };
+              }
+
+              const events = await res.json();
+              return events;
+            } catch (err) {
+              console.log("err", err);
+              return { error: "Failed to fetch calendar events" };
+            }
+          },
+        }),
+      },
+
       messages,
     });
 
@@ -87,7 +136,7 @@ export async function POST(req: Request) {
   }
 }
 
-export function errorHandler(error: unknown) {
+export function errorHandler(error: any) {
   console.log("error", error);
   if (error == null) {
     return "unknown error";

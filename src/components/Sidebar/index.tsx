@@ -42,12 +42,11 @@ export const items = [
     icon: MessagesSquare,
   },
 
-  {
-    title: "Reports",
-    url: "#",
-    icon: FileBarChart2,
-  },
-
+  // {
+  //   title: "Reports",
+  //   url: "#",
+  //   icon: FileBarChart2,
+  // },
   {
     title: "Api Key",
     url: "/manage-api-key",

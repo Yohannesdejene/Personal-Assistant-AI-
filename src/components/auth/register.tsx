@@ -82,7 +82,10 @@ export default function RegisterFrom() {
         <div className="mt-5 mb-1 text-center items-center justify-center flex flex-row gap-2">
           {" "}
           <h6> Don't you have account? </h6>
-          <Link className="  text-white font-bold   text-md" href="/auth/login">
+          <Link
+            className="  text-white font-bold   text-md"
+            href="/auth/sign-in"
+          >
             Login{" "}
           </Link>
         </div>
