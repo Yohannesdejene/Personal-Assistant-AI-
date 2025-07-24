@@ -7,7 +7,7 @@ import { ConsoleLogWriter, eq } from "drizzle-orm";
 import getSession from "@/utils/sessionManager"; // adjust path as needed
 import { encrypt, decrypt } from "@/utils/encryptionDecription";
 import { cookies } from "next/headers";
-
+import { errorHandler } from "@/utils/errorHandler";
 // import { StreamingTextResponse } from "ai/";
 import z from "zod";
 
@@ -136,19 +136,3 @@ Keep answers for calendar queries short and direct.
   }
 }
 
-export function errorHandler(error: any) {
-  console.log("error", error);
-  if (error == null) {
-    return "unknown error";
-  }
-
-  if (typeof error === "string") {
-    return error;
-  }
-
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return JSON.stringify(error);
-}
