@@ -72,41 +72,36 @@ Keep answers for calendar queries short and direct.
 
       tools: {
         calendar: tool({
-          description: "Get the calendar and return events",
+          description:
+            "Get events or add a new event to the user's Google Calendar",
           parameters: z.object({
-            calendar: z
-              .string()
-              .optional()
-              .describe("The calendar type or identifier (optional)"),
+            action: z.enum(["get", "add"]),
+            summary: z.string().optional(),
+            start: z.string().optional(),
+            end: z.string().optional(),
           }),
-
-          execute: async ({ calendar }, { abortSignal }) => {
-            try {
-              const res = await fetch(`http://localhost:3000/api/calendar`, {
-                // signal: abortSignal,
+          execute: async ({ action, summary, start, end }) => {
+            if (action === "get") {
+              const res = await fetch("http://localhost:3000/api/calendar", {
                 headers: {
-                  Cookie: `${token?.name?.toString()}=${token.value?.toString()}`,
+                  Cookie: `${token.name}=${token.value}`,
                 },
               });
-
-              console.log("res", res);
-              if (!res.ok) {
-                // throw new Error("Calendar API error");
-                return {
-                  error: "Failed to fetch calendar events",
-                };
-              }
-
-              const events = await res.json();
-              return events;
-            } catch (err) {
-              console.log("err", err);
-              return { error: "Failed to fetch calendar events" };
+              return await res.json();
+            } else {
+              const res = await fetch("http://localhost:3000/api/calendar", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Cookie: `${token.name}=${token.value}`,
+                },
+                body: JSON.stringify({ summary, start, end }),
+              });
+              return await res.json();
             }
           },
         }),
       },
-
       messages,
     });
 
@@ -135,4 +130,3 @@ Keep answers for calendar queries short and direct.
     );
   }
 }
-

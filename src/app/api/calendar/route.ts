@@ -64,11 +64,14 @@ export async function POST(req: NextRequest) {
     );
   }
   const event = await req.json();
+  console.log("event", event);
   const res = await fetchWithAuth(GOOGLE_CALENDAR_API, accessToken, {
     method: "POST",
     body: JSON.stringify(event),
   });
+  console.log("resresresresvvres", res);
   const data = await res.json();
+  console.log("data-data-data", data);
   if (!res.ok) {
     return NextResponse.json(
       { error: data.error || "Failed to add event." },
