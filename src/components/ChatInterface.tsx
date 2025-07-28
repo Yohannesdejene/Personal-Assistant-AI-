@@ -67,7 +67,6 @@ const ChatInterface = () => {
       const res = await fetch("/api/calendar");
       console.log("resresres calander access", res);
       const data = await res.json();
-      console.log("data", data);
       if (res.status === 401) {
         setNeedsCalendarAccess(true);
         return;
